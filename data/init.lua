@@ -94,3 +94,4 @@ function uiLoop()
   end
 end
 
+uiLoop()
