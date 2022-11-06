@@ -1,7 +1,6 @@
 package lotus
 
 import (
-	"fmt"
 	"io"
 	"os"
 
@@ -64,7 +63,7 @@ func lplay(t *rt.Thread, c *rt.GoCont) (rt.Cont, error) {
 
 func newPlayer() (*player, error) {
 	ctx, err := malgo.InitContext(nil, malgo.ContextConfig{}, func(message string) {
-		fmt.Println("dbg:", message)
+		// TODO: log to some location that doesnt interrupt ui?
 	})
 	if err != nil {
 		return nil, err
