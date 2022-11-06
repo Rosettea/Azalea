@@ -1,12 +1,12 @@
 package.path = package.path .. ';./data/?.lua;./data/?/init.lua'
 
 local lowkey = require 'lowkey'
-local Root = require 'views.root'
+local Screen = require 'views.screen'
 
 local threads = {}
 local fps = 30
 local framestart
-local rv = Root()
+screen = Screen()
 
 dofile 'azalea.lua'
 
@@ -79,17 +79,12 @@ local runThreads = coroutine.wrap(function()
 end)
 
 function redraw()
-	local typ, a, b, c = lowkey.pollEvent()
-	write(typ, a, b, c)
-	if b then write(string.char(b)) end
-	if a == 0x03 then
-		lowkey.cleanup()
-		os.exit()
-	end
+	screen:handleEvent()
+	screen:update()
 
 	local w, h = lowkey.size()
-	rv.size.width, rv.size.height = w, h
-	rv:draw()
+	screen.size.width, screen.size.height = w, h
+	screen:draw()
 end
 
 function uiLoop()
