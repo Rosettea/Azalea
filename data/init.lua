@@ -1,7 +1,12 @@
+package.path = package.path .. ';./data/?.lua;./data/?/init.lua'
+
 local lowkey = require 'lowkey'
+local Root = require 'views.root'
+
 local threads = {}
 local fps = 30
 local framestart
+local rv = Root()
 
 dofile 'azalea.lua'
 
@@ -73,22 +78,25 @@ local runThreads = coroutine.wrap(function()
   end
 end)
 
-thread(function()
-	while true do
-		local typ, a, b, c = lowkey.pollEvent()
-		write(typ, a, b, c)
-		if b then write(string.char(b)) end
-		if a == 0x03 then
-			lowkey.cleanup()
-			os.exit()
-		end
+function redraw()
+	local typ, a, b, c = lowkey.pollEvent()
+	write(typ, a, b, c)
+	if b then write(string.char(b)) end
+	if a == 0x03 then
+		lowkey.cleanup()
+		os.exit()
 	end
-end)
+
+	local w, h = lowkey.size()
+	rv.size.width, rv.size.height = w, h
+	rv:draw()
+end
 
 function uiLoop()
   while true do
 	framestart = time()
-	local need_more_work = runThreads()
+	redraw()
+	runThreads()
 	local elapsed = time() - framestart
 	sleep(math.max(0, 1 / fps - elapsed))
   end
