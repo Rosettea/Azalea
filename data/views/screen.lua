@@ -1,6 +1,7 @@
 local lowkey = require 'lowkey'
 local tt = require 'tt'
-local Base = require 'object'
+local Object = require 'object'
+local Empty = require 'views.empty'
 
 local Screen = Object:extend()
 
@@ -11,9 +12,16 @@ end
 
 function Screen:handleEvent()
 	local typ, a, b = lowkey.pollEvent()
-	if a == 0x03 then -- ctrl c
-		lowkey.cleanup()
-		os.exit()
+	if typ == 'key' then
+		if a == 3 then -- ctrl c
+			lowkey.cleanup()
+			os.exit()
+		end
+		if a == 256 then
+			self.activeView:onTextInput(b)
+		else
+			self.activeView:onKeyInput(a)
+		end
 	end
 end
 
