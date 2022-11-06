@@ -1,9 +1,9 @@
 local tt = require 'tt'
 local Object = require 'object'
 
-local BaseView = Object:extend()
+local View = Object:extend()
 
-function BaseView:new()
+function View:new()
 	self.size = {
 		w = 0,
 		h = 0
@@ -14,19 +14,19 @@ function BaseView:new()
 	}
 end
 
-function BaseView:onKeyInput(key, mod)
+function View:onKeyInput(key, mod)
 end
 
-function BaseView:onTextInput(char, mod)
+function View:onTextInput(char, mod)
 end
 
-function BaseView:draw()
+function View:draw()
 end
 
-function BaseView:update()
+function View:update()
 end
 
-function BaseView:paintBackground(color)
+function View:paintBackground(color)
 	tt.drawRect {
 		x1 = self.pos.x, x2 = self.size.w,
 		y1 = self.pos.y, y2 = self.size.h,
@@ -34,4 +34,4 @@ function BaseView:paintBackground(color)
 	}
 end
 
-return BaseView
+return View

@@ -1,7 +1,7 @@
 package.path = package.path .. ';./data/?.lua;./data/?/init.lua'
 
 local lowkey = require 'lowkey'
-local Screen = require 'views.screen'
+local Screen = require 'view.screen'
 
 local threads = {}
 local fps = 30

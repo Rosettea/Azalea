@@ -1,13 +1,16 @@
+local codes = require 'codes'
 local lowkey = require 'lowkey'
 local tt = require 'tt'
 local Object = require 'object'
-local Empty = require 'views.empty'
+local Empty = require 'view.empty'
 
 local Screen = Object:extend()
 
 function Screen:new()
 	self.activeView = nil
 	self.views = {}
+
+	self:addView(Empty())
 end
 
 function Screen:handleEvent()
@@ -17,7 +20,7 @@ function Screen:handleEvent()
 			lowkey.cleanup()
 			os.exit()
 		end
-		if a == 256 then
+		if a == codes.keyboard.rune then
 			self.activeView:onTextInput(b)
 		else
 			self.activeView:onKeyInput(a)
@@ -29,14 +32,23 @@ function Screen:setActiveView(v)
 	self.activeView = v
 end
 
+function Screen:addView(v)
+	table.insert(self.views, #self.views + 1, v)
+	self:setActiveView(v)
+end
+
 function Screen:draw()
-	self.node:draw()
-	self.update()
+	self:update()
+	for i = 1, #self.views do
+		self.views[i]:draw()
+	end
 	lowkey.update()
 end
 
 function Screen:update()
-	self.node:update()
+	for i = 1, #self.views do
+		self.views[i]:update()
+	end
 end
 
 return Screen
