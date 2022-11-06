@@ -37,7 +37,9 @@ func main() {
 
 	err := util.DoFile(r, "data/init.lua")
 	if err != nil {
+		lk.Cleanup()
 		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	exit := make(chan bool)
