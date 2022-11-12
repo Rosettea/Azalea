@@ -5,10 +5,10 @@ local View = Object:extend()
 
 function View:new()
 	self.size = {
-		w = 0,
-		h = 0
+		x = 0,
+		y = 0
 	}
-	self.pos = {
+	self.position = {
 		x = 0,
 		y = 0
 	}
@@ -28,8 +28,8 @@ end
 
 function View:paintBackground(color)
 	tt.drawRect {
-		x1 = self.pos.x, x2 = self.size.w,
-		y1 = self.pos.y, y2 = self.size.h,
+		x = self.position.x, w = math.ceil(self.size.x),
+		y = self.position.y, h = math.ceil(self.size.y),
 		color = color
 	}
 end
