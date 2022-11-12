@@ -1,16 +1,40 @@
 local codes = require 'codes'
 local lowkey = require 'lowkey'
 local tt = require 'tt'
-local Object = require 'object'
 local Empty = require 'view.empty'
+local Node = require 'node'
+local Object = require 'object'
 
 local Screen = Object:extend()
 
 function Screen:new()
-	self.activeView = nil
-	self.views = {}
+	self.node = Node()
+	self.size = {
+		w = 0,
+		h = 0
+	}
+end
 
-	self:addView(Empty())
+function Screen:getActiveView()
+	return activeView
+end
+
+function Screen:activeNode()
+	local node = self.node:getNodeFromView(activeView)
+	return node or self.node
+end
+
+function Screen:update()
+	self.node.size.x = self.size.w
+	self.node.size.y = self.size.h
+	self.node:update()
+	self.node:updateLayout()
+end
+
+function Screen:draw()
+	self:update()
+	self.node:draw()
+	lowkey.update()
 end
 
 function Screen:handleEvent()
@@ -21,33 +45,10 @@ function Screen:handleEvent()
 			os.exit()
 		end
 		if a == codes.keyboard.rune then
-			self.activeView:onTextInput(b)
+			activeView:onTextInput(b)
 		else
-			self.activeView:onKeyInput(a)
+			activeView:onKeyInput(a)
 		end
-	end
-end
-
-function Screen:setActiveView(v)
-	self.activeView = v
-end
-
-function Screen:addView(v)
-	table.insert(self.views, #self.views + 1, v)
-	self:setActiveView(v)
-end
-
-function Screen:draw()
-	self:update()
-	for i = 1, #self.views do
-		self.views[i]:draw()
-	end
-	lowkey.update()
-end
-
-function Screen:update()
-	for i = 1, #self.views do
-		self.views[i]:update()
 	end
 end
 

@@ -12,6 +12,8 @@ function View:new()
 		x = 0,
 		y = 0
 	}
+	self.focusable = true
+	self.scrollable = false
 end
 
 function View:onKeyInput(key, mod)
@@ -26,10 +28,14 @@ end
 function View:update()
 end
 
+function View:canClose()
+	return true
+end
+
 function View:paintBackground(color)
 	tt.drawRect {
-		x = self.position.x, w = math.ceil(self.size.x),
-		y = self.position.y, h = math.ceil(self.size.y),
+		x = self.position.x, w = self.size.x,
+		y = self.position.y, h = self.size.y,
 		color = color
 	}
 end

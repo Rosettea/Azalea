@@ -6,9 +6,13 @@ local Screen = require 'view.screen'
 local threads = {}
 local fps = 30
 local framestart
-screen = Screen()
+activeView = nil
 
-dofile 'azalea.lua'
+function setActiveView(v)
+	activeView = v
+end
+
+screen = Screen()
 
 local t = os.clock()
 function time()
@@ -80,10 +84,10 @@ end)
 
 function redraw()
 	screen:handleEvent()
-	screen:update()
 
 	local w, h = lowkey.size()
-	screen.size.width, screen.size.height = w, h
+	screen.size.w, screen.size.h = w, h
+	screen:update()
 	screen:draw()
 end
 
@@ -97,4 +101,5 @@ function uiLoop()
   end
 end
 
+dofile 'azalea.lua'
 uiLoop()
