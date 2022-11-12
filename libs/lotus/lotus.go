@@ -18,11 +18,6 @@ type player struct{
 	st stream
 }
 
-type stream struct{
-	source io.ReadSeeker
-	sampleRate uint32
-}
-
 var Loader = packagelib.Loader{
 	Load: loaderFunc,
 	Name: "lotus",
@@ -129,8 +124,4 @@ func (p *player) Play() error {
 
 func (p *player) Pause() error {
 	return p.device.Stop()
-}
-
-func (st *stream) handleSamples(out, in []byte, framecount uint32) {
-	io.ReadFull(st.source, out)
 }
