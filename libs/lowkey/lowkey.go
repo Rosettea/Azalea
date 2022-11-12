@@ -97,19 +97,30 @@ func (l *Lowkey) lkpaint(t *rt.Thread, c *rt.GoCont) (rt.Cont, error) {
 	char, _ := c.StringArg(2)
 	color, _ := c.TableArg(3)
 
-	bgTbl := color.Get(rt.StringValue("bg")).AsTable()
-	bgR := bgTbl.Get(rt.StringValue("r")).AsInt()
-	bgG := bgTbl.Get(rt.StringValue("g")).AsInt()
-	bgB := bgTbl.Get(rt.StringValue("b")).AsInt()
-	bg := tcell.NewRGBColor(int32(bgR), int32(bgG), int32(bgB))
+	style := tcell.StyleDefault
+	bgL := color.Get(rt.StringValue("bg"))
+	if bgL.Type() == rt.TableType {
+		bgTbl := bgL.AsTable()
+		bgR := bgTbl.Get(rt.StringValue("r")).AsInt()
+		bgG := bgTbl.Get(rt.StringValue("g")).AsInt()
+		bgB := bgTbl.Get(rt.StringValue("b")).AsInt()
+		bg := tcell.NewRGBColor(int32(bgR), int32(bgG), int32(bgB))
 
-	fgTbl := color.Get(rt.StringValue("fg")).AsTable()
-	fgR := fgTbl.Get(rt.StringValue("r")).AsInt()
-	fgG := fgTbl.Get(rt.StringValue("g")).AsInt()
-	fgB := fgTbl.Get(rt.StringValue("b")).AsInt()
-	fg := tcell.NewRGBColor(int32(fgR), int32(fgG), int32(fgB))
+		style = style.Background(bg)
+	}
 
-	style := tcell.StyleDefault.Background(bg).Foreground(fg)
+	
+	fgL := color.Get(rt.StringValue("fg"))
+	if bgL.Type() == rt.TableType {
+		fgTbl := fgL.AsTable()
+		fgR := fgTbl.Get(rt.StringValue("r")).AsInt()
+		fgG := fgTbl.Get(rt.StringValue("g")).AsInt()
+		fgB := fgTbl.Get(rt.StringValue("b")).AsInt()
+		fg := tcell.NewRGBColor(int32(fgR), int32(fgG), int32(fgB))
+
+		style = style.Foreground(fg)
+	}
+
 	ch, _ := utf8.DecodeRuneInString(char)
 	l.scr.SetContent(int(x), int(y), ch, nil, style)
 
