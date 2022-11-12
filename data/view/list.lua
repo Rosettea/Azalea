@@ -41,7 +41,7 @@ function List:draw()
 
 		local name = itm.name
 		if #name > self.size.x - 5 then -- account for ellipses with -4
-			name = name:sub(0, self.size.x - 5) + '...'
+			name = name:sub(0, self.size.x - 5) .. '...'
 		end
 
 		tt.drawRect {
