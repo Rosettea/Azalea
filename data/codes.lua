@@ -17,4 +17,7 @@ codes.keyboard = iota({
 	'up',
 	'down'
 }, 256)
+
+codes.keyboard.enter = 13
+
 return codes
