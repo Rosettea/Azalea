@@ -22,6 +22,12 @@ function List:onKeyInput(k)
 		self.selectedIdx = math.min(self.selectedIdx + 1, #self.items)
 	elseif k == codes.keyboard.up then
 		self.selectedIdx = math.max(self.selectedIdx - 1, 1)
+	elseif k == codes.keyboard.enter then
+		local itm = self.items[self.selectedIdx]
+		local cb = itm.cb
+		if type(cb) == 'function' then
+			cb(itm)
+		end
 	end
 end
 
