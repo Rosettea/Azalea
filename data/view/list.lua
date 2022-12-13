@@ -36,7 +36,6 @@ function List:draw()
 	local y = self.position.y
 
 	for i = 1, #self.items do
-		if y > yLimit then break end
 		local itm = self.items[i]
 
 		local name = itm.name
@@ -44,13 +43,7 @@ function List:draw()
 			name = name:sub(0, self.size.x - 5) .. '...'
 		end
 
-		tt.drawRect {
-			x = self.position.x,
-			y = y,
-			w = self.size.x,
-			h = 1,
-			color = {}
-		}
+		tt.write(self.position.x, y, (' '):rep(self.size.x), {})
 		tt.write(self.position.x, y, name, {})
 
 		if self.selectedIdx == i then
